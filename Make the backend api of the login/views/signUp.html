@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Login & Signup Form</title>
+    <!-- <link rel="stylesheet" href="" /> -->
+  </head>
+  <body>
+    <section class="wrapper">
+      <div class="form signup">
+        <header>Sign Up</header>
+        <form onsubmit="signUp(event)" method="POST" action="./login.html">
+          <input type="text" id="Name" placeholder="Full name" required />
+          <input type="text" id="email" placeholder="Email address" required />
+          <span id="email-message" hidden style="color: tomato"></span>
+          <p id="error" style="color: tomato" hidden></p>
+          <input
+            type="password"
+            id="password"
+            placeholder="Password"
+            required
+          />
+          <input type="submit" value="Signup" />
+          <a href="./login.html">Login</a>
+        </form>
+      </div>
+
+      <script src="script.js" async defer></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.2.2/axios.min.js"></script>
+    </section>
+  </body>
+</html>
