@@ -1,1 +1,91 @@
+<!-- <!DOCTYPE html>
 
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <title></title>
+    <meta name="description" content="" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="stylesheet" href="" />
+  </head>
+  <body>
+    <form onsubmit="signUp(event)" method="POST">
+      <h1 id="title">Sign Up</h1>
+      <label for="Name">username</label>
+      <input type="text" id="Name" style="hidden" />
+
+      <label for="email">email</label>
+      <input type="email" id="email" required />
+
+      <label for="password">password: </label>
+      <input type="password" id="password" required />
+
+      <input type="submit" value="sign up" /><br />
+      <button type="button" id="login" class="disable">login</button>
+      <p id="error" style="color: tomato"></p>
+    </form>
+
+    <form onsubmit="login(event)" method="GET" hidden>
+      <h1>Login</h1>
+      <label for="email">email</label>
+      <input type="email" id="email" required />
+      <label for="password">password: </label>
+      <input type="password" id="password" required />
+    </form>
+
+    <script src="script.js" async defer></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.2.2/axios.min.js"></script>
+  </body>
+</html>
+-->
+<!DOCTYPE html>
+<!-- Coding By CodingNepal - codingnepalweb.com -->
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Login & Signup Form</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <section class="wrapper">
+      <div class="form signup">
+        <header>Signup</header>
+        <form onsubmit="signUp(event)" method="POST">
+          <input type="text" id="Name" placeholder="Full name" required />
+          <input type="text" id="email" placeholder="Email address" required />
+          <span id="email-message" hidden style="color: tomato"></span>
+          <p id="error" style="color: tomato" hidden></p>
+          <input
+            type="password"
+            id="password"
+            placeholder="Password"
+            required
+          />
+          <input type="submit" value="Signup" />
+        </form>
+      </div>
+
+      <div class="form login">
+        <header>Login</header>
+        <form onsubmit="login(event)" method="POST">
+          <input type="text" id="email" placeholder="Email address" required />
+          <input
+            type="password"
+            id="password"
+            placeholder="Password"
+            required
+          />
+          <span id="email-message" hidden></span>
+          <a href="#">Forgot password?</a>
+          <input type="submit" value="Login" />
+        </form>
+      </div>
+
+      <script src="script.js" async defer></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.2.2/axios.min.js"></script>
+    </section>
+  </body>
+</html>
