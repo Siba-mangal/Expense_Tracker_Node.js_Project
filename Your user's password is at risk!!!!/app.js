@@ -2,17 +2,17 @@ const express = require("express");
 const bodyParser = require("body-parser");
 const cors = require("cors");
 const sequelize = require("./util/database");
-const User = require("./models/userModel");
 
 const app = express();
 
 const userRoute = require("./route/user");
+const expenseRoute = require("./route/expense");
 app.use(cors());
 app.use(express.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
-app.use("/user", userRoute); //signup
-app.use("/user", userRoute); //login
+app.use("/user", userRoute);
+app.use("/user", expenseRoute); //add expense
 
 sequelize
   .sync()
