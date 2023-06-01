@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Expenses Tracker</title>
+  </head>
+  <body>
+    <form onsubmit="saveToDatabae(event) " method="post">
+      <label for="Price">Expenses</label>
+      <input type="number" id="Price" />
+
+      <label for="Product">Description</label>
+      <input type="text" id="Product" />
+
+      <label for="Category">Pick Category</label>
+      <select id="Category">
+        <option>Food</option>
+        <option>Electronics</option>
+        <option>Body Care</option>
+      </select>
+
+      <input type="submit" value="Add Expense" /><br />
+    </form>
+    <div id="message"></div>
+    <button id="rzp-button">Buy Premium</button>
+    <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+
+    <h3>Electronic Items:</h3>
+    <ul id="Electronics"></ul>
+    <h3>Food Items:</h3>
+    <ul id="Food"></ul>
+    <h3>Skin Care Items:</h3>
+    <ul id="Body Care"></ul>
+    <!-- <script src="script2.js"></script>-->
+    <script src="expense.js" async defer></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.2.2/axios.min.js"></script>
+  </body>
+</html>
