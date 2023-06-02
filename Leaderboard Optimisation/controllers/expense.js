@@ -1,4 +1,5 @@
 const expense = require("../models/expense");
+const User = require("../models/userModel");
 
 exports.addExpense = function (req, res, next) {
   try {
@@ -19,7 +20,19 @@ exports.addExpense = function (req, res, next) {
         signupId: req.user.id,
       })
       .then((expense) => {
-        return res.status(201).json({ expense });
+        const total_expense = Number(req.user.total_expenses) + Number(price);
+        User.update(
+          { total_expenses: total_expense },
+          {
+            where: { id: req.user.id },
+          }
+        )
+          .then(async () => {
+            return res.status(201).json({ expense });
+          })
+          .catch((err) => {
+            console.log(err);
+          });
       })
       .catch(function (err) {
         console.log(err);
