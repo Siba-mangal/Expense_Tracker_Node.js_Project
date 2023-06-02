@@ -17,6 +17,10 @@ const User = sequelize.define("signup", {
     type: Sequelize.STRING,
     allowNull: false,
   },
+  total_expenses: {
+    type: Sequelize.INTEGER,
+    defaultValue: 0,
+  },
   ispremiumuser: Sequelize.BOOLEAN,
 });
 
