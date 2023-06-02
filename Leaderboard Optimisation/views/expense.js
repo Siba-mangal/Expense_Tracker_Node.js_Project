@@ -128,7 +128,7 @@ function showLeaderboard() {
     userLeaderBoardArray.data.forEach((userDetails) => {
       learderboardElem.innerHTML += `<li>Name - ${
         userDetails.username
-      } Total Expense - ${userDetails.total_cost || 0} </li>`;
+      } Total Expense - ${userDetails.total_expenses || 0} </li>`;
     });
   };
   document.getElementById("message").appendChild(inputElement);
