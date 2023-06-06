@@ -1,12 +1,7 @@
-// const ulElectronics = document.getElementById("Electronics");
-// const ulFood = document.getElementById("Food");
-// const ulSkinCare = document.getElementById("Body Care");
 const expenses = document.getElementById("expenses");
 
 function saveToDatabae(event) {
   event.preventDefault();
-  //console.log(event.target.Category.value);
-  //   console.log(event.target);
   const price = event.target.Price.value;
   const productName = event.target.Product.value;
   const category = event.target.Category.value;

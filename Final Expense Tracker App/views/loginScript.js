@@ -36,3 +36,7 @@ function login(e) {
   e.target.email.value = "";
   e.target.password.value = "";
 }
+
+document.getElementById("forgotPassword").onclick = async function (e) {
+  SetTitle("Forgot Password");
+};
