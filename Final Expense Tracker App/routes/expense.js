@@ -12,6 +12,11 @@ router.post(
   expenseController.addExpense
 );
 router.get(
+  "/download",
+  userAuthentication.authenticate,
+  expenseController.downloadExpenses
+);
+router.get(
   "/get-expense",
   userAuthentication.authenticate,
   expenseController.getExpense
