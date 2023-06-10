@@ -1,6 +1,7 @@
 const expense = require("../models/expense");
 const User = require("../models/userModel");
 const sequelize = require("../util/database");
+const AWS = require("aws-sdk");
 
 exports.addExpense = async function (req, res, next) {
   const t = await sequelize.transaction();
@@ -13,7 +14,7 @@ exports.addExpense = async function (req, res, next) {
     const category = req.body.category;
     console.log(req.user.id);
 
-    const expenses = await expense.create(
+    await expense.create(
       {
         price: price,
         productName: product,
@@ -66,5 +67,47 @@ exports.deleteExpense = async (req, res, next) => {
   } catch (err) {
     console.log(err);
     return res.status(403).json({ success: true, message: "Failed" });
+  }
+};
+
+function uploadToS3(data, filename) {
+  const BUCKET_NAME = "expense23";
+  const IAM_USER_KEY = "AKIAUFUSMQT6QPTPEFUO";
+  const IAM_USER_SECRET = "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";
+
+  let s3bucket = new AWS.S3({
+    accessKeyId: IAM_USER_KEY,
+    secretAccessKey: IAM_USER_SECRET,
+    // Bucket: BUCKET_NAME
+  });
+  var params = {
+    Bucket: BUCKET_NAME,
+    Key: filename,
+    Body: data,
+    ACL: "public-read",
+  };
+  return new Promise((resolve, reject) => {
+    s3bucket.upload(params, (err, res) => {
+      if (err) {
+        console.log("Something went wrong");
+        reject(err);
+      } else {
+        console.log("Success", res);
+        resolve(res.Location);
+      }
+    });
+  });
+}
+exports.downloadExpenses = async (req, res) => {
+  try {
+    const expenses = await req.user.getExpenses();
+    console.log(expenses);
+    const useId = req.user.id;
+    const StringifyExpense = JSON.stringify(expenses);
+    const filename = `Expense${useId}/${new Date()}.txt`;
+    const fileURL = await uploadToS3(StringifyExpense, filename);
+    res.status(201).json({ fileURL, success: true });
+  } catch (err) {
+    console.log(err);
   }
 };
