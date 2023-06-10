@@ -1,16 +1,30 @@
+document.querySelector("#plus-icon").addEventListener("click", function () {
+  document.querySelector(".popup").classList.add("active");
+});
+document
+  .querySelector(".popup .close-btn")
+  .addEventListener("click", function () {
+    document.querySelector(".popup").classList.remove("active");
+  });
+document
+  .querySelector(".popup .add-expense")
+  .addEventListener("click", function () {
+    document.querySelector(".popup").classList.remove("active");
+  });
+
 const expenses = document.getElementById("expenses");
 
-function saveToDatabae(event) {
-  event.preventDefault();
-  const price = event.target.Price.value;
-  const productName = event.target.Product.value;
-  const category = event.target.Category.value;
+function saveToDatabase(e) {
+  e.preventDefault();
+  const price = e.target.Price.value;
+  const productName = e.target.Product.value;
+  const category = e.target.Category.value;
   const obj = {
     price,
     productName,
     category,
   };
-  //   console.log(obj);
+  console.log(obj);
   const token = localStorage.getItem("token");
   axios
     .post("http://localhost:3000/expense/add-expense", obj, {
@@ -20,14 +34,13 @@ function saveToDatabae(event) {
       if (response.status == 201) {
         showListofRegisteredUser(response.data);
       }
-      //   showListofRegisteredUser(response.data);
       console.log(response);
     })
     .catch((error) => console.log(error));
 
-  event.target.Price.value = "";
-  event.target.Product.value = "";
-  event.target.Category.value = "";
+  e.target.Price.value = "";
+  e.target.Product.value = "";
+  e.target.Category.value = "";
   location.reload();
 }
 
@@ -47,7 +60,7 @@ function parseJwt(token) {
 }
 function showPremiumuserMessage() {
   document.getElementById("rzp-button").style.visibility = "hidden";
-  document.getElementById("message").innerHTML = "You are a premium user ";
+  // document.getElementById("message").innerHTML = "You are a premium user ";
 }
 
 window.addEventListener("DOMContentLoaded", () => {
@@ -78,7 +91,7 @@ window.addEventListener("DOMContentLoaded", () => {
 });
 
 function showListofRegisteredUser(user) {
-  let li = `<li id='${user.id}'>${user.price} - ${user.productName} - ${user.category}  <button onclick=deleteUser(event,'${user.id}')>Delete</button></li>`;
+  let li = `<li class="liList" id='${user.id}'>${user.price} - ${user.productName} - ${user.category}  <button style="width:50px;font-size:10px" onclick=deleteUser(event,'${user.id}')>Delete</button></li>`;
   expenses.innerHTML += li;
 }
 
@@ -109,7 +122,8 @@ function removeItemFromScreen(expense) {
 function showLeaderboard() {
   const inputElement = document.createElement("input");
   inputElement.type = "button";
-  inputElement.value = "Show Leaderboard";
+  inputElement.value = "Leaderboard";
+  inputElement.classList.add("leaderboard");
   inputElement.onclick = async () => {
     const token = localStorage.getItem("token");
     const userLeaderBoardArray = await axios.get(
@@ -123,7 +137,7 @@ function showLeaderboard() {
     userLeaderBoardArray.data.forEach((userDetails) => {
       learderboardElem.innerHTML += `<li>Name - ${
         userDetails.username
-      } Total Expense - ${userDetails.total_expenses || 0} </li>`;
+      } Total Expense - ${userDetails.total_cost || 0} </li>`;
     });
   };
   document.getElementById("message").appendChild(inputElement);
@@ -152,7 +166,6 @@ document.getElementById("rzp-button").onclick = async function (e) {
       // console.log(res);
       alert("You are a Premium User Now");
       document.getElementById("rzp-button").style.visibility = "hidden";
-      document.getElementById("message").innerHTML = "You are a premium user";
       localStorage.setItem("token", res.data.token);
       showLeaderboard();
     },
@@ -165,3 +178,27 @@ document.getElementById("rzp-button").onclick = async function (e) {
     alert("Something went wrong");
   });
 };
+
+function download() {
+  const token = localStorage.getItem("token");
+
+  axios
+    .get("http://localhost:3000/expense/download", {
+      headers: { Authorization: token },
+    })
+    .then((response) => {
+      if (response.status == 201) {
+        // console.log(response.data);
+        var a = document.createElement("a");
+        a.href = response.data.fileURL;
+        a.download = "myexpense.csv";
+        a.click();
+      } else {
+        // throw new Error();
+        console.log(response.data.msg);
+      }
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+}

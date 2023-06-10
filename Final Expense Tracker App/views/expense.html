@@ -5,32 +5,65 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Expenses Tracker</title>
+    <link rel="stylesheet" href="expense.css" />
+    <a href="#" class="avatar-link">
+      <img src="./image/account.png" alt="Avatar" class="avatar" />
+    </a>
   </head>
   <body>
-    <form onsubmit="saveToDatabae(event) " method="post">
-      <label for="Price">Expenses</label>
-      <input type="number" id="Price" />
+    <div class="heading-container">
+      <h3 class="heading">Daily Expenses</h3>
+    </div>
 
-      <label for="Product">Description</label>
-      <input type="text" id="Product" />
+    <div class="list">
+      <ul id="expenses"></ul>
+      <!-- <br />
+      <table>
+        <tr>
+          <th>Price</th>
+          <th>Description</th>
+          <th>Category</th>
+        </tr>
+      </table>-->
+    </div>
 
-      <label for="Category">Pick Category</label>
-      <select id="Category">
-        <option>Food</option>
-        <option>Electronics</option>
-        <option>Body Care</option>
-      </select>
+    <div class="center">
+      <button id="plus-icon">+</button>
+    </div>
+    <div class="popup">
+      <div class="close-btn">&times;</div>
+      <div class="form">
+        <form class="form" onsubmit="saveToDatabase(event)" method="post">
+          <label for="Category">Pick Category</label>
+          <select id="Category">
+            <option>Select Category</option>
+            <option>Food</option>
+            <option>Electronics</option>
+            <option>Skin</option>
+          </select>
+          <label class="price" for="Price">Price</label>
+          <input type="number" id="Price" required />
 
-      <input type="submit" value="Add Expense" /><br />
-    </form>
-    <div id="message"></div>
-    <button id="rzp-button">Buy Premium</button>
-    <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+          <label for="Product" for="description">Description</label>
+          <input type="text" id="Product" id="description" />
 
-    <h3>Expenses:</h3>
-    <ul id="expenses"></ul>
-    <ul id="leaderboard"></ul>
+          <input type="submit" class="add-expense" value="Add" /><br />
+        </form>
+      </div>
+    </div>
+
+    <div class="container">
+      <div id="message"></div>
+      <button id="rzp-button">Buy Premium</button>
+      <button class="download-btn" onClick="download()" id="downloadExpense">
+        Download File
+      </button>
+
+      <ul id="leaderboard"></ul>
+    </div>
+
     <script src="expense.js" async defer></script>
+    <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.2.2/axios.min.js"></script>
   </body>
 </html>
