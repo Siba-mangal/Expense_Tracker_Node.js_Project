@@ -21,6 +21,11 @@ router.get(
   userAuthentication.authenticate,
   expenseController.getExpense
 );
+router.get(
+  "/get-expense/:pageno",
+  userAuthentication.authenticate,
+  expenseController.getExpense
+);
 router.delete(
   "/delete-expense/:UserId",
   userAuthentication.authenticate,
