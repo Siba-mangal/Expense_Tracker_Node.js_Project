@@ -1,317 +1,449 @@
-Global styles
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
+
+/* CSS code in expense.css */
 
 body {
   font-family: Arial, sans-serif;
-  background-color: #f2f2f2;
-  height:100vh
+  margin: 0;
+  padding: 0;
+  height:90vh;
 }
 
-.container {
-  max-width: 800px;
-  margin: 0 auto;
-  padding: 20px;
-}
-
-/* Header */
-header {
-  background-color: #4a90e2;
-  padding: 20px;
-  color: #ffffff;
-  text-align: center;
-}
-
-/* Main */
-main {
-  background-color: #ffffff;
-  padding: 20px;
-  border-radius: 8px;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+.profile {
+  position: relative;
+  display: flex;
+  align-items: flex-start;
+  padding: 5px;
 }
 
 
-
-ul {
-  margin-top: 10px;
-}
-
-li {
-  margin-bottom: 10px;
-  padding-left: 20px;
-  list-style-type: none;
-  border-left: 2px solid #4a90e2;
-}
-
-label {
-  display: block;
-  margin-bottom: 5px;
-  color: #333333;
-}
-
-input[type="number"],
-input[type="text"],
-select {
-  width: 100%;
-  padding: 10px;
-  margin-bottom: 10px;
-  border-radius: 5px;
-  border: 1px solid #ccc;
-  transition: border-color 0.3s ease;
-}
-
-input[type="submit"],
-button {
-  width: 100%;
-  padding: 12px;
-  margin-top: 5px;
-  background-color: #4a90e2;
-  color: #ffffff;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  font-size: 16px;
-  transition: background-color 0.3s ease;
-}
-
-input[type="submit"]:hover,
-button:hover {
-  background-color: #1565c0;
-}
-
-.avatar {
-  width: 50px;
-  height: 50px;
-  border-radius: 50%;
-}
-
-#message {
-  margin-top: 10px;
-  color: #333333;
-}
-
-/* Footer */
-footer {
-  background-color: #333333;
-  padding: 20px;
-  color: #ffffff;
-  text-align: center;
-}
-
-/* Responsive styles */
-@media screen and (max-width: 768px) {
-  .container {
-    padding: 10px;
-  }
-
-  input[type="submit"],
-  button {
-    font-size: 14px;
-  }
-}
-
-@media screen and (max-width: 480px) {
-  header {
-    font-size: 20px;
-    padding: 10px;
-  }
-
-  main {
-    padding: 10px;
-  }
-
-  h3 {
-    font-size: 18px;
-  }
-
-  input[type="submit"],
-  button {
-    font-size: 14px;
-    padding: 10px;
-  }
-}
-.avatar {
-  width: 50px;
-  height: 50px;
-  border-radius: 50%;
-}
 .avatar-link {
-  display: inline-block;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+}
+
+.download-btn {
+  display: none;
+  background-color: #4caf50;
+  color: white;
+  border: none;
+  padding: 8px 12px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.download-btn.active{
+  display:block;
+  left: 15vh;
+  top:-7.3vh;
+  transition: background-color 0.3s;
+}
+.msg .leaderboard{
+  display:none;
+  position: relative;
+  background-color: #4CAF50;
+  color: white;
+  left:25vh;
+  top:-6.3vh;
+  border: none;
+  padding: 8px 12px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+.msg .leaderboard.active{
+  display: block;
+  position: relative;
+  background-color: #4caf50;
+  color: white;
+  /* left:25vh; */
+  top:-6.3vh;
+  padding: 8px 12px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+
+.msg .leaderboard:hover{
+  background-color: #45a049;
+}
+
+.download-btn:hover {
+  background-color: #45a049;
+}
+
+.heading-container {
+  background-color: #f2f2f2;
+  padding: 20px;
+}
+
+.heading {
+  margin: 0;
+}
+
+.list {
+  padding: 20px;
+}
+
+.list ul {
+  list-style-type: none;
+  padding: 0;
+}
+
+.center {
+  text-align: center;
+  margin-top: 20px;
+}
+
+.plus-icon {
+  background-color: #2196f3;
+  color: white;
+  border: none;
+  width: 40px;
+  height: 40px;
+  font-size: 24px;
+  border-radius: 50%;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.plus-icon:hover {
+  background-color: #1976d2;
+}
+
+.popup {
+  display: none;
+  position: fixed;
+  z-index: 1;
+  left: 0;
+  top: 0;
+  width: 100%;
+  overflow: auto;
+  background-color: rgba(0, 0, 0, 0.4);
+}
+
+.popup.active{
+  display: block;
+  position: fixed;
+  z-index: 1;
+  left: 0;
+  top: 0;
+  width: 100%;
+  overflow: auto;
+  background-color: rgba(0, 0, 0, 0.4);
+}
+
+.popup .form {
+
+  background-color: #fefefe;
+  margin: 15% auto;
+  padding: 20px;
+  padding-right: 20px;
+  border: 2px solid #888;
+  border-radius: 5px;
+  width: 300px;
+}
+
+.close-btn {
+  color: #aaa;
+  float: right;
+  font-size: 28px;
+  font-weight: bold;
   cursor: pointer;
 }
 
-.center{
-    position: absolute;
-    top:80%;
-    left:95%;
-    transform: translate(-70%,-70%);
+.close-btn:hover,
+.close-btn:focus {
+  color: #000;
+  text-decoration: none;
+  cursor: pointer;
 }
-.center button{
-    padding:10px 20px;
-    /* background:#f5f5f5; */
-    border: none;
-    outline :none;
-    cursor: pointer;
-    border-radius: 5px;
+
+.form label,
+.form input[type='submit'] {
+  display: block;
+  margin-bottom: 10px;
 }
-/* .container #message{
-  position:absolute;
-    top:90%;
-    left:40%;
-} */
-.heading-container{
-  padding-left:35%;
-  justify-content: center;
+
+.form input[type='submit'] {
+  background-color: #4caf50;
+  color: white;
+  border: none;
+  margin-top: 4px;
+  margin-left: 46%;
+  margin-right: 50%;
+  /* margin-bottom: 50%; */
+  padding: 8px 12px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.form label{
+  display: block;
   text-align: center;
-  width: 60vh;
+
 }
-.heading-container .heading{
-  text-align: center;
-  font-weight: 500px;
-  font-family: 'Courier New', Courier, monospace;
-  background-color: #4a90e2;
-  font-size: 30px;
-  border-radius: 15px;
+
+.form #Category{
+  display: block;
+  width:24vh;
+  margin: auto;
+  /* text-align: center; */
+}
+.form #Price{
+  display: block;
+  margin: auto;
+}
+.form #Product{
+  display: block;
+  margin: auto;
+}
+
+
+.form input[type='submit']:hover {
+  background-color: #45a049;
   
 }
 
-.container #message .leaderboard{
+.container {
+  padding: 20px;
+}
+
+.pagination-container {
   text-align: center;
-  background-color: #4a90e2;
-  color: black;
-  text-shadow:#ccc;
+  margin-top: 20px;
+}
+
+/* .pagination-container button {
+  background-color: #4caf50;
+  color: white;
+  border: none;
+  padding: 8px 12px;
+  margin-right: 5px;
   border-radius: 4px;
-  width: 90px;
-  padding-top: 8px;
-  padding-bottom: 8px;
-  padding-left: 8px;
-  padding-right: 8px;
-
-  position: absolute;
-  left: 65%;
-  bottom: 83%;
-
-}
-.container .download-btn{
-  position: absolute;
-  top:85%;
-  left: 46%;
-}
-.popup{
-    position:absolute;
-    top:70%;
-    left:75%;
-    opacity: 0;
-    display: none;
-    transform: translate(-50%,-50%) scale(1.25);
-    background: white;
-    box-shadow: 2px 2px 4px 4px rgba(0,0,0,0.25);
-    border-radius: 10px;
-    transition: top 0ms ease-in-out 200ms,
-                opacity 200ms ease-in-out 0ms,
-                transform 200ms ease-in-out 0ms;
-}
-.popup.active {
-    top:70%;
-    opacity: 1;
-    display: block;
-    transform: translate(-50%,-50%) scale(1.25);
-    transition: top 0ms ease-in-out 0ms,
-                opacity 200ms ease-in-out 0ms,
-                transform 200ms ease-in-out 0ms;
-}
-/* .popup .form #Category{
-
+  cursor: pointer;
+  transition: background-color 0.3s;
 } */
-.popup .close-btn{
-    position: absolute;
-    top: 9px;
-    right:10px;
-    width:15px;
-    height:15px;
-    background:#4a90e2;
-    color:#eee;
-    text-align: center;
-    line-height:15px;
-    border-radius: 15px;
-    cursor: pointer;
+#pagination {
+  background-color: #fefefe;
+  padding: 8px 16px;
+  margin-right: 5px;
+  cursor: pointer;
+  border: none;
+  text-decoration: none;
 }
-.popup .form label{
-    text-align: center;
-    color:#222;
-    margin:5px 0px 8px;
-    font-size:20px;
-}
-.popup .form #Category {
-    margin:10px 5px;
-    width: 35vh;
-
-    border-color: black;
-}
-.popup .form .add-expense{
-  position: relative;
-  /* width: auto; */
-  font-size: medium;
-  margin-left: 20px;
-}
-.popup .form input {
-    margin:6px 5px;
-    width: 84%;
-    padding:10px;
-    border-color: black;
-}
-.container .download-btn{
+#pagination h3{
+  color: #191515;
   width: auto;
+  margin: -1px;
+  border: none;
+  cursor: pointer;
+}
+#pagination button{
+  /* margin: auto; */
+  color: #000000;
+  background-color: #45a049;
+  padding-top:-5px;
+  cursor: pointer;
 }
 
-.expense-items h3{
-    padding-left:50px;
+#pagination button:hover{
+  background-color: #7be37f;
+  cursor: pointer;
+}
+/* .link .active{
+  background-color: #4CAF50;
+  pointer-events: none;
+  transition: background-color 0.3s ease-out;
+}
+.pagination-container a.active {
+  background-color: #4CAF50;
+  color: white;
+  border-radius: 5px;
 }
 
-.list{
+.pagination-container a:hover:not(.active) {
+  background-color: #ddd;
+  border-radius: 5px;
+}
+
+
+
+.pagination-container button:hover {
+  background-color: #45a049;
+}
+
+.pagination-container button:disabled {
+  background-color: #e0e0e0;
+  cursor: not-allowed;
+}
+
+#prev-page,
+#next-page {
+  width: 80px;
+} */
+
+
+.dropdown-content {
+  display: none;
   position: absolute;
+  background-color: #f9f9f9;
+  min-width: 160px;
+  box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.2);
+  z-index: 1;
+}
+
+.dropdown-content a {
+  color: black;
+  padding: 12px 16px;
+  text-decoration: none;
+  display: block;
+  cursor: pointer;
+}
+
+.dropdown-content a:hover {
+  background-color: #f1f1f1;
+}
+
+.dropdown:hover .dropdown-content {
+  display: block;
+}
+/* ------------------------- for list code */
+
+/* CSS code in expense.css */
+
+.liList {
+  padding: 10px;
+  margin-bottom: 10px;
+  background-color: #f2f2f2;
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.liList button {
+  background-color: #dc3545;
+  color: white;
+  border: none;
+  padding: 4px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.liList button:hover {
+  background-color: #c82333;
+}
+
+.liList button:focus {
+  outline: none;
+}
+
+.liList button:disabled {
+  background-color: #e0e0e0;
+  cursor: not-allowed;
+}
+
+.liList button:disabled:hover {
+  background-color: #e0e0e0;
+}
+
+.liList button:disabled:focus {
+  outline: none;
+}
+
+/* CSS code in expense.css */
+
+.list-items {
+  padding: 10px;
+  background-color: #f2f2f2;
+  border-radius: 4px;
+  margin-bottom: 10px;
+}
+
+
+/* CSS code in expense.css */
+
+/* ...existing CSS styles... */
+
+.table-container {
+  padding: 20px;
+}
+
+#expenses {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+#expenses th,
+#expenses td {
+  padding: 10px;
+  border: 1px solid #ddd;
+}
+
+#expenses th {
+  background-color: #f2f2f2;
+}
+
+#expenses td:last-child {
   text-align: center;
-  margin-left: 50px;
 }
-.list #expenses {
+
+#expenses button {
+  width: 50px;
+  font-size: 10px;
+  background-color: #ec1227;
+  color: white;
+  border: none;
+  padding: 4px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+#expenses button:hover {
+  background-color: #9d2d2d;
+  color: white;
+  border: none;
+  padding: 4px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+/* code for .leaderboard css table list */
+
+/* Styles for the leaderboard table */
+#leaderboard {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 20px;
+}
+
+#leaderboard th,
+#leaderboard td {
+  padding: 10px;
+  text-align: left;
+  border: 1px solid #ddd;
+}
+
+#leaderboard th {
+  background-color: #f2f2f2;
+}
+
+/* Styles for the leaderboard heading */
+h1 {
   position: relative;
-  justify-content: flex;
-  top:20px;
-  left:10px;
-  font-size: 15px;
-}
-.list #expenses .liList{
-  position: relative;
+  padding-left: 80%;
+  font-size: 24px;
+  margin-bottom: 10px;
 }
 
-@media screen and (max-width: 768px) {
-  .center {
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-  }
-
-  .popup {
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%) scale(1);
-  }
-
-  .popup.active {
-    top: 50%;
-    transform: translate(-50%, -50%) scale(1);
-  }
-
-  .popup .form input {
-        width: 50%;
-        border-color: black;
-        outline: none;
-    }
-    .popup .form .add-expense{
-    width:auto;
-    margin-left: 10px;
-}
+/* Additional styles for the leaderboard */
+#head-board {
+  display:contents; /* Hide the table header initially */
 }

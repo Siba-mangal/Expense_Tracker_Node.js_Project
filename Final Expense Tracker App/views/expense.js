@@ -12,7 +12,61 @@ document
     document.querySelector(".popup").classList.remove("active");
   });
 
+document.querySelector(".profile").addEventListener("click", function () {
+  const del = document.querySelector(".download-btn");
+  if (del.classList.contains("active")) {
+    del.classList.remove("active");
+  } else {
+    del.classList.add("active");
+  }
+});
+
+document.querySelector(".profile").addEventListener("click", function () {
+  const led = document.querySelector(".leaderboard");
+  if (led.classList.contains("active")) {
+    led.classList.remove("active");
+  } else {
+    led.classList.add("active");
+  }
+});
+
+// -------------------------------------
+const tbody = document.querySelector("#expenses tbody");
 const expenses = document.getElementById("expenses");
+
+const selectElement = document.getElementById("rowPerPage");
+console.log(selectElement.value);
+
+selectElement.addEventListener("change", async () => {
+  const selectedOption = selectElement.selectedOptions[0];
+  console.log(`Selected option: ${selectedOption.value}`);
+  const rowsize = selectedOption.value;
+  localStorage.setItem("pagesize", rowsize);
+  const token = localStorage.getItem("token");
+
+  const pageno = localStorage.getItem("pageno");
+
+  const expensedata = await axios.get(
+    `http://localhost:3000/expense/get-expense?param1==${pageno}&param2=${rowsize}`,
+    {
+      headers: { Authorization: token },
+    }
+  );
+  showPagination(
+    expensedata.data.currentPage,
+    expensedata.data.hasNextPage,
+    expensedata.data.nextPage,
+    expensedata.data.hasPreviousPage,
+    expensedata.data.previousPage,
+    expensedata.data.lastPage
+  );
+  tbody.innerHTML = "";
+  localStorage.setItem("pagesize", expensedata.data.limit_per_page);
+  for (let i = 0; i < expensedata.data.expenseData.length; i++) {
+    console.log(expensedata.data.expenseData[i]);
+    showListofRegisteredUser(expensedata.data.expenseData[i]);
+  }
+});
 
 function saveToDatabase(e) {
   e.preventDefault();
@@ -32,9 +86,10 @@ function saveToDatabase(e) {
     })
     .then((response) => {
       if (response.status == 201) {
+        console.log(response.data);
         showListofRegisteredUser(response.data);
+        addOnScreen(obj, response.data.id);
       }
-      console.log(response);
     })
     .catch((error) => console.log(error));
 
@@ -63,7 +118,7 @@ function showPremiumuserMessage() {
   // document.getElementById("message").innerHTML = "You are a premium user ";
 }
 
-window.addEventListener("DOMContentLoaded", () => {
+window.addEventListener("DOMContentLoaded", async () => {
   const token = localStorage.getItem("token");
   const decodeToken = parseJwt(token);
   console.log(decodeToken);
@@ -72,27 +127,88 @@ window.addEventListener("DOMContentLoaded", () => {
     showPremiumuserMessage();
     showLeaderboard();
   }
-  axios
-    .get("http://localhost:3000/expense/get-expense", {
+  //pagination
+  const PageNo = 1;
+  localStorage.setItem("pageno", PageNo);
+  const pageSize = localStorage.getItem("pagesize") || 5;
+
+  const expensedata = await axios.get(
+    `http://localhost:3000/expense/get-expense?param1=${PageNo}&param2=${pageSize}`,
+    {
       headers: { Authorization: token },
-    })
-    .then((response) => {
-      if (response.status == 201) {
-        for (var i = 0; i < response.data.expense.length; i++) {
-          showListofRegisteredUser(response.data.expense[i]);
-        }
-        // console.log(response);
-      }
-      //   console.log(response);
-    })
-    .catch((err) => {
-      console.log(err);
-    });
+    }
+  );
+
+  localStorage.setItem("pagesize", expensedata.data.limit_per_page);
+  if (expensedata.data.limit_per_page <= 0) {
+    alert("No records found");
+    document.getElementById("pagination").style.display = "none";
+    selectElement.style.display = "none";
+  } else {
+    for (var i = 0; i < expensedata.data.expenseData.length; i++) {
+      showListofRegisteredUser(expensedata.data.expenseData[i]);
+    }
+    showPagination(
+      expensedata.data.currentPage,
+      expensedata.data.hasNextPage,
+      expensedata.data.nextPage,
+      expensedata.data.hasPreviousPage,
+      expensedata.data.previousPage,
+      expensedata.data.lastPage
+    );
+  }
+  document.getElementById("pagination").style.display = "block";
+  selectElement.style.display = "block";
+  // .then((response) => {
+  //   if (response.status == 201) {
+  //     showPagination(
+  //       response.data.currentPage,
+  //       response.data.hasNextPage,
+  //       response.data.nextPage,
+  //       response.data.hasPreviousPage,
+  //       response.data.previousPage,
+  //       response.data.lastPage
+  //     );
+  //     for (var i = 0; i < response.data.expenseData.length; i++) {
+  //       showListofRegisteredUser(response.data.expenseData[i]);
+  //     }
+  //   }
+  // })
+  // .catch((err) => {
+  //   console.log(err);
+  // });
 });
 
 function showListofRegisteredUser(user) {
-  let li = `<li class="liList" id='${user.id}'>${user.price} - ${user.productName} - ${user.category}  <button style="width:50px;font-size:10px" onclick=deleteUser(event,'${user.id}')>Delete</button></li>`;
-  expenses.innerHTML += li;
+  // let li = `<li class="liList" id='${user.id}'>${user.price} - ${user.productName} - ${user.category}  <button style="width:50px;font-size:10px" onclick=deleteUser(event,'${user.id}')>Delete</button></li>`;
+  // const numRow = tbody.row.length;
+  // console.log(numRow);
+  const row = document.createElement("tr");
+  row.id = user.id;
+
+  const priceCell = document.createElement("td");
+  priceCell.textContent = user.price;
+  row.appendChild(priceCell);
+
+  const productNameCell = document.createElement("td");
+  productNameCell.textContent = user.productName;
+  row.appendChild(productNameCell);
+
+  const categoryCell = document.createElement("td");
+  categoryCell.textContent = user.category;
+  row.appendChild(categoryCell);
+
+  const actionCell = document.createElement("td");
+  const deleteButton = document.createElement("button");
+  deleteButton.style.width = "50px";
+  deleteButton.style.fontSize = "10px";
+  deleteButton.textContent = "Delete";
+  deleteButton.addEventListener("click", (event) => deleteUser(event, user.id));
+  actionCell.appendChild(deleteButton);
+  row.appendChild(actionCell);
+
+  tbody.appendChild(row);
+  // tbody.innerHTML += row;
 }
 
 function deleteUser(e, UserId) {
@@ -115,8 +231,11 @@ function deleteUser(e, UserId) {
 }
 
 function removeItemFromScreen(expense) {
+  console.log(expense);
   const elem = document.getElementById(expense.id);
-  expenses.removeChild(elem);
+  console.log(elem);
+  elem.remove();
+  // expenses.removeChild(elem);
 }
 
 function showLeaderboard() {
@@ -132,12 +251,23 @@ function showLeaderboard() {
     );
     console.log(userLeaderBoardArray);
 
-    let learderboardElem = document.getElementById("leaderboard");
-    learderboardElem.innerHTML += "<h1>Leader Board</h1>";
+    const learderboardElem = document.getElementById("head-board");
+
+    if (learderboardElem.innerHTML === "") {
+      learderboardElem.innerHTML += "<h1>Leader Board</h1>";
+      learderboardElem.innerHTML +=
+        "<tr><th>Name</th><th>Total Expenses</th></tr>";
+    }
+
+    const leaderboardBody = document.getElementById("leaderboard-body");
+    leaderboardBody.innerHTML = "";
     userLeaderBoardArray.data.forEach((userDetails) => {
-      learderboardElem.innerHTML += `<li>Name - ${
-        userDetails.username
-      } Total Expense - ${userDetails.total_cost || 0} </li>`;
+      const row = document.createElement("tr");
+      row.innerHTML = `
+    <td>${userDetails.username}</td>
+    <td>${userDetails.total_cost !== null ? userDetails.total_cost : 0}</td>
+  `;
+      leaderboardBody.appendChild(row);
     });
   };
   document.getElementById("message").appendChild(inputElement);
@@ -201,4 +331,112 @@ function download() {
     .catch((err) => {
       console.log(err);
     });
+}
+const pagination = document.getElementById("pagination");
+
+function showPagination(
+  currentPage,
+  hasNextPage,
+  nextPage,
+  hasPreviousPage,
+  previousPage,
+  lastPage
+) {
+  pagination.innerHTML = "";
+  if (hasPreviousPage) {
+    const btn2 = document.createElement("button");
+    btn2.innerHTML = previousPage;
+    btn2.addEventListener("click", function (e) {
+      e.preventDefault();
+      getProducts(previousPage);
+    });
+    pagination.appendChild(btn2);
+  }
+  const btn1 = document.createElement("button");
+  btn1.innerHTML = `<h3>${currentPage}</h3>`;
+
+  btn1.addEventListener("click", function (e) {
+    e.preventDefault();
+    localStorage.setItem("pageno", currentPage);
+    getProducts(currentPage);
+  });
+
+  pagination.appendChild(btn1);
+
+  if (hasNextPage) {
+    const btn3 = document.createElement("button");
+    btn3.innerHTML = nextPage;
+    btn3.addEventListener("click", function (e) {
+      e.preventDefault();
+      getProducts(nextPage);
+    });
+
+    pagination.appendChild(btn3);
+  }
+}
+
+async function getProducts(page) {
+  // var pageSize = 2;
+  tbody.innerHTML = "";
+
+  const token = localStorage.getItem("token");
+
+  var pagesize = localStorage.getItem("pagesize") || 5;
+  localStorage.setItem("pageno", page);
+  const expensedata = await axios.get(
+    `http://localhost:3000/expense/get-expense?param1=${page}&param2=${pagesize}`,
+    {
+      headers: { Authorization: token },
+    }
+  );
+  console.log("getProducts", expensedata);
+  for (let i = 0; i < expensedata.data.expenseData.length; i++) {
+    showListofRegisteredUser(expensedata.data.expenseData[i]);
+  }
+  // showListofRegisteredUser(expensedata.data.expenseData);
+
+  // if (expensedata.data.lastPage === expensedata.data.nextPage) {
+  // expensedata.data
+  // showPagination(
+  // expensedata.data.currentPage,
+  // expensedata.data.hasNextPage
+  // expensedata.data.nextPage
+  // expensedata.data.hasPreviousPage,
+  // expensedata.data.previousPage,
+  //   expensedata.data.lastPage
+  // );
+  // }
+  localStorage.setItem("pagesize", expensedata.data.limit_per_page);
+  showPagination(
+    expensedata.data.currentPage,
+    expensedata.data.hasNextPage,
+    expensedata.data.nextPage,
+    expensedata.data.hasPreviousPage,
+    expensedata.data.previousPage,
+    expensedata.data.lastPage
+  );
+}
+
+//adOnScreen
+
+function addOnScreen(obj, UserId) {
+  const numRows = table.rows.length;
+  console.log(numRows);
+  const pageno = parseInt(localStorage.getItem("pageno"));
+  const pagesize = parseInt(localStorage.getItem("pagesize"));
+
+  const hasNextPage = pagesize < pagesize * (pageno - 1) + numRows + 1;
+  const nextPage = pageno + 1;
+  const hasPreviousPage = pageno > 1;
+  const previousPage = pageno - 1;
+  const lastPage = Math.ceil((numRows + 1) / pagesize);
+
+  showPagination(
+    pageno,
+    hasNextPage,
+    nextPage,
+    hasPreviousPage,
+    previousPage,
+    lastPage
+  );
 }
