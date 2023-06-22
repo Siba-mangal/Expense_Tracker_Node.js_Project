@@ -47,7 +47,7 @@ selectElement.addEventListener("change", async () => {
   const pageno = localStorage.getItem("pageno");
 
   const expensedata = await axios.get(
-    `http://localhost:3000/expense/get-expense?param1==${pageno}&param2=${rowsize}`,
+    `http://localhost:3000/expense/get-expense?param1=${pageno}&param2=${rowsize}`,
     {
       headers: { Authorization: token },
     }
@@ -159,30 +159,9 @@ window.addEventListener("DOMContentLoaded", async () => {
   }
   document.getElementById("pagination").style.display = "block";
   selectElement.style.display = "block";
-  // .then((response) => {
-  //   if (response.status == 201) {
-  //     showPagination(
-  //       response.data.currentPage,
-  //       response.data.hasNextPage,
-  //       response.data.nextPage,
-  //       response.data.hasPreviousPage,
-  //       response.data.previousPage,
-  //       response.data.lastPage
-  //     );
-  //     for (var i = 0; i < response.data.expenseData.length; i++) {
-  //       showListofRegisteredUser(response.data.expenseData[i]);
-  //     }
-  //   }
-  // })
-  // .catch((err) => {
-  //   console.log(err);
-  // });
 });
 
 function showListofRegisteredUser(user) {
-  // let li = `<li class="liList" id='${user.id}'>${user.price} - ${user.productName} - ${user.category}  <button style="width:50px;font-size:10px" onclick=deleteUser(event,'${user.id}')>Delete</button></li>`;
-  // const numRow = tbody.row.length;
-  // console.log(numRow);
   const row = document.createElement("tr");
   row.id = user.id;
 
@@ -393,19 +372,6 @@ async function getProducts(page) {
   for (let i = 0; i < expensedata.data.expenseData.length; i++) {
     showListofRegisteredUser(expensedata.data.expenseData[i]);
   }
-  // showListofRegisteredUser(expensedata.data.expenseData);
-
-  // if (expensedata.data.lastPage === expensedata.data.nextPage) {
-  // expensedata.data
-  // showPagination(
-  // expensedata.data.currentPage,
-  // expensedata.data.hasNextPage
-  // expensedata.data.nextPage
-  // expensedata.data.hasPreviousPage,
-  // expensedata.data.previousPage,
-  //   expensedata.data.lastPage
-  // );
-  // }
   localStorage.setItem("pagesize", expensedata.data.limit_per_page);
   showPagination(
     expensedata.data.currentPage,
@@ -420,8 +386,8 @@ async function getProducts(page) {
 //adOnScreen
 
 function addOnScreen(obj, UserId) {
-  const numRows = table.rows.length;
-  console.log(numRows);
+  const numRows = tbody.rows.length;
+  console.log("numRows", numRows);
   const pageno = parseInt(localStorage.getItem("pageno"));
   const pagesize = parseInt(localStorage.getItem("pagesize"));
 
